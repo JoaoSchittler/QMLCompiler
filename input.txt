@@ -1,0 +1,3 @@
+main:
+let x = { 0.5 qinl () | 0.5 qinr () } in
+if x then { 0.4 qinl () | 0.6 qinr () } else { 0 qinl () | 1 qinr () }
