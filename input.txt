@@ -1,3 +1,17 @@
+true: Q1++Q1
+true = { 0 qinl () | 1 qinr () }
+
+false:Q1++Q1
+false = { 1 qinl () | 0 qinr () }
+
+halftrue:Q1++Q1
+halftrue= { 0.5 qinl () | 0.5 qinr () }
+
+func:Q1++Q1 -o Q1++Q1
+func z = if z then true() else false()
+
 main:
-let x = { 0.5 qinl () | 0.5 qinr () } in
-if x then { 0.4 qinl () | 0.6 qinr () } else { 0 qinl () | 1 qinr () }
+let x = halftrue () in
+let y = func(x) in 
+if y then false() else true()
+

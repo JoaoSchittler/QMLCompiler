@@ -155,12 +155,23 @@ class FunctionSemantics
 			while(varList != NULL)
 			{
 				std::string varName = *((std::string*)varList->data );
-				FuncVar var = *(currentFunc->symbolTable->GetSymbol(varName));
-				
-				if(func->symbolTable->vars.at(n).size != var.size)
+				FuncVar* var = (currentFunc->symbolTable->GetSymbol(varName));
+				if(var != NULL)
 				{
-					printf("Incorrect argument size (%d) on argument %d of function %s\n",var.size,n,func->name.c_str());
-					yyerror("Wrong argument size");
+					if(func->symbolTable->vars.at(n).size != var->size)
+					{
+						printf("Incorrect argument size (%d) on argument %d of function %s\n",var->size,n,func->name.c_str());
+						yyerror("Wrong argument size");
+					}
+				}
+				else
+				{
+					LetVar* lvar = currentFunc->symbolTable->GetLetVar(varName);
+					if(func->symbolTable->vars.at(n).size != lvar->varFQC.b)
+					{
+						printf("Incorrect argument size (%d) on argument %d of function %s\n",lvar->varFQC.b,n,func->name.c_str());
+						yyerror("Wrong argument size");
+					}
 				}
 				n++;
 				varList = varList->next;
@@ -237,26 +248,15 @@ class SemanticOperations
 				exit(0);
 			}
 			Function* func = functionStack.top();
-			printf("CON IF\n");
 			FQC* Con = MakeContextFQC(MakeContextFQC(c,t),f); // Con =  context for operations on then and else			
-			Con->printFQC();
-			
-			printf("THEN\n");
-			t->printFQC();
-			
-			printf("ELSE\n");
-			f->printFQC();
 			
 			FQC* ifFQC = new FQC(Con->a, Con->h ,t->b); //a = a CF , h = h CF + h cF + h [t|u]F , b = b [t|u]F , g = g [t|u]F + g cF
-			printf("CREATING CONDITION\n");
 			c->CreateCondition(t,f,true);
-			printf("CREATED CONDITION\n");
 			ifFQC->phi = Con->phi;
 			ifFQC->phi->PlusUnitary(c->phi);
 			ifFQC->inputVars = c->inputVars;
 			ifFQC->auxVars = c->auxVars;
 			
-			printf("IF FQC\n");
 			ifFQC->printFQC();
 			return ifFQC;
 		}
@@ -318,7 +318,6 @@ class SemanticOperations
 		}
 		static FQC* OperationLET(std::string* x, FQC* t, FQC* u)
 		{
-			printf("LET\n");
 			Function* f = functionStack.top();
 			//	FQC* c = MakeContextFQC(t,u);
 			//	FQC* letFQC = new FQC(c->a,c->h+t->h+u->h,u->b); // a = a cF , h = h cF + h tF + h uF , b = b uF , g = g tF + g uF
@@ -326,8 +325,8 @@ class SemanticOperations
 				
 		    //	c->phi->PlusUnitary(u->phi);
 			//	letFQC->phi = c->phi;
-			FQC* letFQC = u;				
-			letFQC->printFQC();
+			FQC* letFQC = u;		
+					
 			return letFQC; //Returns that FQC
 		}
 		static FQC* OperationCONST(QBit* constValue)
@@ -352,7 +351,13 @@ class SemanticOperations
 					FQC* varFQC = new FQC(lv->varFQC.a,lv->varFQC.h,lv->varFQC.b,lv->varFQC.g);
 					varFQC->inputVars = lv->varFQC.inputVars; 
 					varFQC->auxVars = lv->varFQC.auxVars;
-					varFQC->phi = lv->varFQC.phi;
+					
+					varFQC->phi = new Unitary();
+					varFQC->phi->type = lv->varFQC.phi->type;
+					varFQC->phi->rot = lv->varFQC.phi->rot;
+					varFQC->phi->nextT = lv->varFQC.phi->nextT;
+					varFQC->phi->nextP = lv->varFQC.phi->nextP;
+					varFQC->phi->condition = lv->varFQC.phi->condition;
 					return varFQC;
 				}
 				else

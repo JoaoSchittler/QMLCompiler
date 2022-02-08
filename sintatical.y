@@ -139,6 +139,7 @@ CONSTVALUE: OPBRK NUM INL OPPAR CLPAR VBAR NUM INR OPPAR CLPAR CLBRK { $$ = new 
 LETIN: LET ID EQU STM  {SemanticOperations::AddLetContext($2,$4);}  IN STM { $$ = SemanticOperations::OperationLET($2,$4,$7); FunctionSemantics::RemoveLetContext();  } 
 
 FUNCCALL:ID OPPAR IDLIST CLPAR { FunctionSemantics::VerifyValidArgs($1,$3); $$ = SemanticOperations::OperationFuncCall($1,$3); }
+FUNCCALL:ID OPPAR CLPAR { FunctionSemantics::VerifyValidArgs($1,NULL); $$ = SemanticOperations::OperationFuncCall($1,NULL); }
 
 IDLIST: ID  { FunctionSemantics::VerifySymbolExists($1);$$ = NewElement(NULL,(intptr_t)$1);}| 
 		ID COMMA IDLIST { FunctionSemantics::VerifySymbolExists($1);$$ = NewElement($3,(intptr_t)$1);}

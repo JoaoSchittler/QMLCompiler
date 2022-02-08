@@ -47,6 +47,10 @@ class SymbolTable
 			{
 				if(var.name == name) return true;
 			}
+			for(auto&var : letvars)
+			{
+				if(var.name == name) return true;
+			}
 			return false;
 		}
 		FuncVar* GetSymbol(std::string name)

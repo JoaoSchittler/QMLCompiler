@@ -1,0 +1,961 @@
+Terminals unused in grammar
+
+   FOR
+   INC
+   DEC
+   OP_ADD
+   OP_SUB
+   OP_MUL
+   OP_DIV
+   BOP_OR
+   BOP_AND
+   ROP_LT
+   ROP_GT
+   ROP_EQ
+   ROP_LEQ
+   ROP_GEQ
+   ROP_NE
+   OPBRK
+   CLBRK
+   SEMIC
+   NUM
+   '='
+   ROP_LE
+   '^'
+
+
+State 41 conflicts: 2 shift/reduce
+State 42 conflicts: 2 shift/reduce
+
+
+Grammar
+
+    0 $accept: S $end
+
+    1 S: FUNCS MAINTAB
+
+    2 MAINTAB: MAIN COL STM
+
+    3 FUNCS: FUNC FUNCS
+    4      | /* empty */
+
+    5 $@1: /* empty */
+
+    6 $@2: /* empty */
+
+    7 $@3: /* empty */
+
+    8 FUNC: ID COL $@1 ARGS ID $@2 ARGNAMES $@3 EQU STM
+
+    9 $@4: /* empty */
+
+   10 ARGS: TYPE $@4 RARROW ARGS
+   11     | TYPE
+
+   12 $@5: /* empty */
+
+   13 ARGNAMES: ID $@5 ARGNAMES
+   14         | /* empty */
+
+   15 STM: COND
+   16    | LETIN
+   17    | FUNCCALL
+   18    | VALUE
+   19    | PARVALUE
+
+   20 $@6: /* empty */
+
+   21 COND: IF $@6 ID THEN STM ELSE STM
+   22     | IFQ ID THEN STM ELSE STM
+
+   23 LETIN: LET ID EQU STM IN STM
+   24      | LET IDLIST EQU STM IN STM
+
+   25 FUNCCALL: ID OPPAR ARGNAMES CLPAR
+
+   26 VALUE: TRUE
+   27      | FALSE
+
+   28 TYPE: Q1
+   29     | TYPE PLUS TYPE
+   30     | TYPE TENP TYPE
+
+   31 PARVALUE: OPPAR PARVALUE2 CLPAR
+
+   32 PARVALUE2: VALUE
+   33          | VALUE COMMA PARVALUE2
+
+   34 IDLIST: OPPAR IDLIST2 CLPAR
+
+   35 IDLIST2: ID
+   36        | ID COMMA IDLIST2
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'=' (61)
+'^' (94)
+error (256)
+MAIN (258) 2
+FOR (259)
+IF (260) 21
+IFQ (261) 22
+ELSE (262) 21 22
+THEN (263) 21 22
+LET (264) 23 24
+IN (265) 23 24
+EQU (266) 8 23 24
+INC (267)
+DEC (268)
+OP_ADD (269)
+OP_SUB (270)
+OP_MUL (271)
+OP_DIV (272)
+BOP_OR (273)
+BOP_AND (274)
+ROP_LT (275)
+ROP_GT (276)
+ROP_EQ (277)
+ROP_LEQ (278)
+ROP_GEQ (279)
+ROP_NE (280)
+OPPAR (281) 25 31 34
+CLPAR (282) 25 31 34
+OPBRK (283)
+CLBRK (284)
+SEMIC (285)
+COMMA (286) 33 36
+COL (287) 2 8
+RARROW (288) 10
+PLUS (289) 29
+TENP (290) 30
+TRUE (291) 26
+FALSE (292) 27
+ID (293) 8 13 21 22 23 25 35 36
+Q1 (294) 28
+NUM (295)
+ROP_LE (296)
+
+
+Nonterminals, with rules where they appear
+
+$accept (44)
+    on left: 0
+S (45)
+    on left: 1, on right: 0
+MAINTAB (46)
+    on left: 2, on right: 1
+FUNCS (47)
+    on left: 3 4, on right: 1 3
+FUNC (48)
+    on left: 8, on right: 3
+$@1 (49)
+    on left: 5, on right: 8
+$@2 (50)
+    on left: 6, on right: 8
+$@3 (51)
+    on left: 7, on right: 8
+ARGS (52)
+    on left: 10 11, on right: 8 10
+$@4 (53)
+    on left: 9, on right: 10
+ARGNAMES (54)
+    on left: 13 14, on right: 8 13 25
+$@5 (55)
+    on left: 12, on right: 13
+STM (56)
+    on left: 15 16 17 18 19, on right: 2 8 21 22 23 24
+COND (57)
+    on left: 21 22, on right: 15
+$@6 (58)
+    on left: 20, on right: 21
+LETIN (59)
+    on left: 23 24, on right: 16
+FUNCCALL (60)
+    on left: 25, on right: 17
+VALUE (61)
+    on left: 26 27, on right: 18 32 33
+TYPE (62)
+    on left: 28 29 30, on right: 10 11 29 30
+PARVALUE (63)
+    on left: 31, on right: 19
+PARVALUE2 (64)
+    on left: 32 33, on right: 31 33
+IDLIST (65)
+    on left: 34, on right: 24
+IDLIST2 (66)
+    on left: 35 36, on right: 34 36
+
+
+state 0
+
+    0 $accept: . S $end
+
+    ID  shift, and go to state 1
+
+    $default  reduce using rule 4 (FUNCS)
+
+    S      go to state 2
+    FUNCS  go to state 3
+    FUNC   go to state 4
+
+
+state 1
+
+    8 FUNC: ID . COL $@1 ARGS ID $@2 ARGNAMES $@3 EQU STM
+
+    COL  shift, and go to state 5
+
+
+state 2
+
+    0 $accept: S . $end
+
+    $end  shift, and go to state 6
+
+
+state 3
+
+    1 S: FUNCS . MAINTAB
+
+    MAIN  shift, and go to state 7
+
+    MAINTAB  go to state 8
+
+
+state 4
+
+    3 FUNCS: FUNC . FUNCS
+
+    ID  shift, and go to state 1
+
+    $default  reduce using rule 4 (FUNCS)
+
+    FUNCS  go to state 9
+    FUNC   go to state 4
+
+
+state 5
+
+    8 FUNC: ID COL . $@1 ARGS ID $@2 ARGNAMES $@3 EQU STM
+
+    $default  reduce using rule 5 ($@1)
+
+    $@1  go to state 10
+
+
+state 6
+
+    0 $accept: S $end .
+
+    $default  accept
+
+
+state 7
+
+    2 MAINTAB: MAIN . COL STM
+
+    COL  shift, and go to state 11
+
+
+state 8
+
+    1 S: FUNCS MAINTAB .
+
+    $default  reduce using rule 1 (S)
+
+
+state 9
+
+    3 FUNCS: FUNC FUNCS .
+
+    $default  reduce using rule 3 (FUNCS)
+
+
+state 10
+
+    8 FUNC: ID COL $@1 . ARGS ID $@2 ARGNAMES $@3 EQU STM
+
+    Q1  shift, and go to state 12
+
+    ARGS  go to state 13
+    TYPE  go to state 14
+
+
+state 11
+
+    2 MAINTAB: MAIN COL . STM
+
+    IF     shift, and go to state 15
+    IFQ    shift, and go to state 16
+    LET    shift, and go to state 17
+    OPPAR  shift, and go to state 18
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+    ID     shift, and go to state 21
+
+    STM       go to state 22
+    COND      go to state 23
+    LETIN     go to state 24
+    FUNCCALL  go to state 25
+    VALUE     go to state 26
+    PARVALUE  go to state 27
+
+
+state 12
+
+   28 TYPE: Q1 .
+
+    $default  reduce using rule 28 (TYPE)
+
+
+state 13
+
+    8 FUNC: ID COL $@1 ARGS . ID $@2 ARGNAMES $@3 EQU STM
+
+    ID  shift, and go to state 28
+
+
+state 14
+
+   10 ARGS: TYPE . $@4 RARROW ARGS
+   11     | TYPE .
+   29 TYPE: TYPE . PLUS TYPE
+   30     | TYPE . TENP TYPE
+
+    PLUS  shift, and go to state 29
+    TENP  shift, and go to state 30
+
+    ID        reduce using rule 11 (ARGS)
+    $default  reduce using rule 9 ($@4)
+
+    $@4  go to state 31
+
+
+state 15
+
+   21 COND: IF . $@6 ID THEN STM ELSE STM
+
+    $default  reduce using rule 20 ($@6)
+
+    $@6  go to state 32
+
+
+state 16
+
+   22 COND: IFQ . ID THEN STM ELSE STM
+
+    ID  shift, and go to state 33
+
+
+state 17
+
+   23 LETIN: LET . ID EQU STM IN STM
+   24      | LET . IDLIST EQU STM IN STM
+
+    OPPAR  shift, and go to state 34
+    ID     shift, and go to state 35
+
+    IDLIST  go to state 36
+
+
+state 18
+
+   31 PARVALUE: OPPAR . PARVALUE2 CLPAR
+
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+
+    VALUE      go to state 37
+    PARVALUE2  go to state 38
+
+
+state 19
+
+   26 VALUE: TRUE .
+
+    $default  reduce using rule 26 (VALUE)
+
+
+state 20
+
+   27 VALUE: FALSE .
+
+    $default  reduce using rule 27 (VALUE)
+
+
+state 21
+
+   25 FUNCCALL: ID . OPPAR ARGNAMES CLPAR
+
+    OPPAR  shift, and go to state 39
+
+
+state 22
+
+    2 MAINTAB: MAIN COL STM .
+
+    $default  reduce using rule 2 (MAINTAB)
+
+
+state 23
+
+   15 STM: COND .
+
+    $default  reduce using rule 15 (STM)
+
+
+state 24
+
+   16 STM: LETIN .
+
+    $default  reduce using rule 16 (STM)
+
+
+state 25
+
+   17 STM: FUNCCALL .
+
+    $default  reduce using rule 17 (STM)
+
+
+state 26
+
+   18 STM: VALUE .
+
+    $default  reduce using rule 18 (STM)
+
+
+state 27
+
+   19 STM: PARVALUE .
+
+    $default  reduce using rule 19 (STM)
+
+
+state 28
+
+    8 FUNC: ID COL $@1 ARGS ID . $@2 ARGNAMES $@3 EQU STM
+
+    $default  reduce using rule 6 ($@2)
+
+    $@2  go to state 40
+
+
+state 29
+
+   29 TYPE: TYPE PLUS . TYPE
+
+    Q1  shift, and go to state 12
+
+    TYPE  go to state 41
+
+
+state 30
+
+   30 TYPE: TYPE TENP . TYPE
+
+    Q1  shift, and go to state 12
+
+    TYPE  go to state 42
+
+
+state 31
+
+   10 ARGS: TYPE $@4 . RARROW ARGS
+
+    RARROW  shift, and go to state 43
+
+
+state 32
+
+   21 COND: IF $@6 . ID THEN STM ELSE STM
+
+    ID  shift, and go to state 44
+
+
+state 33
+
+   22 COND: IFQ ID . THEN STM ELSE STM
+
+    THEN  shift, and go to state 45
+
+
+state 34
+
+   34 IDLIST: OPPAR . IDLIST2 CLPAR
+
+    ID  shift, and go to state 46
+
+    IDLIST2  go to state 47
+
+
+state 35
+
+   23 LETIN: LET ID . EQU STM IN STM
+
+    EQU  shift, and go to state 48
+
+
+state 36
+
+   24 LETIN: LET IDLIST . EQU STM IN STM
+
+    EQU  shift, and go to state 49
+
+
+state 37
+
+   32 PARVALUE2: VALUE .
+   33          | VALUE . COMMA PARVALUE2
+
+    COMMA  shift, and go to state 50
+
+    $default  reduce using rule 32 (PARVALUE2)
+
+
+state 38
+
+   31 PARVALUE: OPPAR PARVALUE2 . CLPAR
+
+    CLPAR  shift, and go to state 51
+
+
+state 39
+
+   25 FUNCCALL: ID OPPAR . ARGNAMES CLPAR
+
+    ID  shift, and go to state 52
+
+    $default  reduce using rule 14 (ARGNAMES)
+
+    ARGNAMES  go to state 53
+
+
+state 40
+
+    8 FUNC: ID COL $@1 ARGS ID $@2 . ARGNAMES $@3 EQU STM
+
+    ID  shift, and go to state 52
+
+    $default  reduce using rule 14 (ARGNAMES)
+
+    ARGNAMES  go to state 54
+
+
+state 41
+
+   29 TYPE: TYPE . PLUS TYPE
+   29     | TYPE PLUS TYPE .
+   30     | TYPE . TENP TYPE
+
+    PLUS  shift, and go to state 29
+    TENP  shift, and go to state 30
+
+    PLUS      [reduce using rule 29 (TYPE)]
+    TENP      [reduce using rule 29 (TYPE)]
+    $default  reduce using rule 29 (TYPE)
+
+
+state 42
+
+   29 TYPE: TYPE . PLUS TYPE
+   30     | TYPE . TENP TYPE
+   30     | TYPE TENP TYPE .
+
+    PLUS  shift, and go to state 29
+    TENP  shift, and go to state 30
+
+    PLUS      [reduce using rule 30 (TYPE)]
+    TENP      [reduce using rule 30 (TYPE)]
+    $default  reduce using rule 30 (TYPE)
+
+
+state 43
+
+   10 ARGS: TYPE $@4 RARROW . ARGS
+
+    Q1  shift, and go to state 12
+
+    ARGS  go to state 55
+    TYPE  go to state 14
+
+
+state 44
+
+   21 COND: IF $@6 ID . THEN STM ELSE STM
+
+    THEN  shift, and go to state 56
+
+
+state 45
+
+   22 COND: IFQ ID THEN . STM ELSE STM
+
+    IF     shift, and go to state 15
+    IFQ    shift, and go to state 16
+    LET    shift, and go to state 17
+    OPPAR  shift, and go to state 18
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+    ID     shift, and go to state 21
+
+    STM       go to state 57
+    COND      go to state 23
+    LETIN     go to state 24
+    FUNCCALL  go to state 25
+    VALUE     go to state 26
+    PARVALUE  go to state 27
+
+
+state 46
+
+   35 IDLIST2: ID .
+   36        | ID . COMMA IDLIST2
+
+    COMMA  shift, and go to state 58
+
+    $default  reduce using rule 35 (IDLIST2)
+
+
+state 47
+
+   34 IDLIST: OPPAR IDLIST2 . CLPAR
+
+    CLPAR  shift, and go to state 59
+
+
+state 48
+
+   23 LETIN: LET ID EQU . STM IN STM
+
+    IF     shift, and go to state 15
+    IFQ    shift, and go to state 16
+    LET    shift, and go to state 17
+    OPPAR  shift, and go to state 18
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+    ID     shift, and go to state 21
+
+    STM       go to state 60
+    COND      go to state 23
+    LETIN     go to state 24
+    FUNCCALL  go to state 25
+    VALUE     go to state 26
+    PARVALUE  go to state 27
+
+
+state 49
+
+   24 LETIN: LET IDLIST EQU . STM IN STM
+
+    IF     shift, and go to state 15
+    IFQ    shift, and go to state 16
+    LET    shift, and go to state 17
+    OPPAR  shift, and go to state 18
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+    ID     shift, and go to state 21
+
+    STM       go to state 61
+    COND      go to state 23
+    LETIN     go to state 24
+    FUNCCALL  go to state 25
+    VALUE     go to state 26
+    PARVALUE  go to state 27
+
+
+state 50
+
+   33 PARVALUE2: VALUE COMMA . PARVALUE2
+
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+
+    VALUE      go to state 37
+    PARVALUE2  go to state 62
+
+
+state 51
+
+   31 PARVALUE: OPPAR PARVALUE2 CLPAR .
+
+    $default  reduce using rule 31 (PARVALUE)
+
+
+state 52
+
+   13 ARGNAMES: ID . $@5 ARGNAMES
+
+    $default  reduce using rule 12 ($@5)
+
+    $@5  go to state 63
+
+
+state 53
+
+   25 FUNCCALL: ID OPPAR ARGNAMES . CLPAR
+
+    CLPAR  shift, and go to state 64
+
+
+state 54
+
+    8 FUNC: ID COL $@1 ARGS ID $@2 ARGNAMES . $@3 EQU STM
+
+    $default  reduce using rule 7 ($@3)
+
+    $@3  go to state 65
+
+
+state 55
+
+   10 ARGS: TYPE $@4 RARROW ARGS .
+
+    $default  reduce using rule 10 (ARGS)
+
+
+state 56
+
+   21 COND: IF $@6 ID THEN . STM ELSE STM
+
+    IF     shift, and go to state 15
+    IFQ    shift, and go to state 16
+    LET    shift, and go to state 17
+    OPPAR  shift, and go to state 18
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+    ID     shift, and go to state 21
+
+    STM       go to state 66
+    COND      go to state 23
+    LETIN     go to state 24
+    FUNCCALL  go to state 25
+    VALUE     go to state 26
+    PARVALUE  go to state 27
+
+
+state 57
+
+   22 COND: IFQ ID THEN STM . ELSE STM
+
+    ELSE  shift, and go to state 67
+
+
+state 58
+
+   36 IDLIST2: ID COMMA . IDLIST2
+
+    ID  shift, and go to state 46
+
+    IDLIST2  go to state 68
+
+
+state 59
+
+   34 IDLIST: OPPAR IDLIST2 CLPAR .
+
+    $default  reduce using rule 34 (IDLIST)
+
+
+state 60
+
+   23 LETIN: LET ID EQU STM . IN STM
+
+    IN  shift, and go to state 69
+
+
+state 61
+
+   24 LETIN: LET IDLIST EQU STM . IN STM
+
+    IN  shift, and go to state 70
+
+
+state 62
+
+   33 PARVALUE2: VALUE COMMA PARVALUE2 .
+
+    $default  reduce using rule 33 (PARVALUE2)
+
+
+state 63
+
+   13 ARGNAMES: ID $@5 . ARGNAMES
+
+    ID  shift, and go to state 52
+
+    $default  reduce using rule 14 (ARGNAMES)
+
+    ARGNAMES  go to state 71
+
+
+state 64
+
+   25 FUNCCALL: ID OPPAR ARGNAMES CLPAR .
+
+    $default  reduce using rule 25 (FUNCCALL)
+
+
+state 65
+
+    8 FUNC: ID COL $@1 ARGS ID $@2 ARGNAMES $@3 . EQU STM
+
+    EQU  shift, and go to state 72
+
+
+state 66
+
+   21 COND: IF $@6 ID THEN STM . ELSE STM
+
+    ELSE  shift, and go to state 73
+
+
+state 67
+
+   22 COND: IFQ ID THEN STM ELSE . STM
+
+    IF     shift, and go to state 15
+    IFQ    shift, and go to state 16
+    LET    shift, and go to state 17
+    OPPAR  shift, and go to state 18
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+    ID     shift, and go to state 21
+
+    STM       go to state 74
+    COND      go to state 23
+    LETIN     go to state 24
+    FUNCCALL  go to state 25
+    VALUE     go to state 26
+    PARVALUE  go to state 27
+
+
+state 68
+
+   36 IDLIST2: ID COMMA IDLIST2 .
+
+    $default  reduce using rule 36 (IDLIST2)
+
+
+state 69
+
+   23 LETIN: LET ID EQU STM IN . STM
+
+    IF     shift, and go to state 15
+    IFQ    shift, and go to state 16
+    LET    shift, and go to state 17
+    OPPAR  shift, and go to state 18
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+    ID     shift, and go to state 21
+
+    STM       go to state 75
+    COND      go to state 23
+    LETIN     go to state 24
+    FUNCCALL  go to state 25
+    VALUE     go to state 26
+    PARVALUE  go to state 27
+
+
+state 70
+
+   24 LETIN: LET IDLIST EQU STM IN . STM
+
+    IF     shift, and go to state 15
+    IFQ    shift, and go to state 16
+    LET    shift, and go to state 17
+    OPPAR  shift, and go to state 18
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+    ID     shift, and go to state 21
+
+    STM       go to state 76
+    COND      go to state 23
+    LETIN     go to state 24
+    FUNCCALL  go to state 25
+    VALUE     go to state 26
+    PARVALUE  go to state 27
+
+
+state 71
+
+   13 ARGNAMES: ID $@5 ARGNAMES .
+
+    $default  reduce using rule 13 (ARGNAMES)
+
+
+state 72
+
+    8 FUNC: ID COL $@1 ARGS ID $@2 ARGNAMES $@3 EQU . STM
+
+    IF     shift, and go to state 15
+    IFQ    shift, and go to state 16
+    LET    shift, and go to state 17
+    OPPAR  shift, and go to state 18
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+    ID     shift, and go to state 21
+
+    STM       go to state 77
+    COND      go to state 23
+    LETIN     go to state 24
+    FUNCCALL  go to state 25
+    VALUE     go to state 26
+    PARVALUE  go to state 27
+
+
+state 73
+
+   21 COND: IF $@6 ID THEN STM ELSE . STM
+
+    IF     shift, and go to state 15
+    IFQ    shift, and go to state 16
+    LET    shift, and go to state 17
+    OPPAR  shift, and go to state 18
+    TRUE   shift, and go to state 19
+    FALSE  shift, and go to state 20
+    ID     shift, and go to state 21
+
+    STM       go to state 78
+    COND      go to state 23
+    LETIN     go to state 24
+    FUNCCALL  go to state 25
+    VALUE     go to state 26
+    PARVALUE  go to state 27
+
+
+state 74
+
+   22 COND: IFQ ID THEN STM ELSE STM .
+
+    $default  reduce using rule 22 (COND)
+
+
+state 75
+
+   23 LETIN: LET ID EQU STM IN STM .
+
+    $default  reduce using rule 23 (LETIN)
+
+
+state 76
+
+   24 LETIN: LET IDLIST EQU STM IN STM .
+
+    $default  reduce using rule 24 (LETIN)
+
+
+state 77
+
+    8 FUNC: ID COL $@1 ARGS ID $@2 ARGNAMES $@3 EQU STM .
+
+    $default  reduce using rule 8 (FUNC)
+
+
+state 78
+
+   21 COND: IF $@6 ID THEN STM ELSE STM .
+
+    $default  reduce using rule 21 (COND)
